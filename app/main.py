@@ -31,7 +31,7 @@ class Student(db.Model):
 
     def __repr__(self):
         return f'<Student {self.full_name}>'
-
+# search the email in the database first, if it already exists the alert the user that the email already exists else commit 
 class Teacher(db.Model):
     __tablename__ = 'teachers'
     id = db.Column(db.Integer, primary_key=True)
@@ -82,8 +82,7 @@ def register_student():
 
         db.session.add(new_student)
         db.session.commit()
-
-        flash('Student registered successfully!!!','Success')
+  
 
         return redirect(url_for('index'))
     return render_template('student_login.html')
@@ -110,7 +109,6 @@ def register_teacher():
         db.session.add(new_teacher)
         db.session.commit()
 
-        flash('Teacher registered succesfully','Success')
 
         return redirect(url_for('index'))
     return render_template('teacher_login.html')
