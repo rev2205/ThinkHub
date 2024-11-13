@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Registration</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-image: url("{{ url_for('static', filename='images/stud.jpg' ) }}");
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      padding: 20px;
+    }
+
+    .registration-container {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      width: 100%;
+      max-width: 450px;
+      padding: 35px;
+      border-radius: 20px;
+      box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .registration-container h2 {
+      margin-bottom: 30px;
+      font-size: 32px;
+      color: #2c3e50;
+      text-align: center;
+      position: relative;
+    }
+
+    .registration-container h2::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 4px;
+      background: linear-gradient(to right, #4CAF50, #45a049);
+      border-radius: 2px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      color: #34495e;
+      margin-bottom: 8px;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 15px;
+      color: #2c3e50;
+      background-color: #fff;
+      transition: all 0.3s ease;
+      box-sizing: border-box;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: #4CAF50;
+      box-shadow: 0 0 10px rgba(76, 175, 80, 0.1);
+      outline: none;
+    }
+
+    .form-group input:hover,
+    .form-group textarea:hover {
+      border-color: #4CAF50;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .button-container {
+      display: flex;
+      gap: 15px;
+      margin-top: 30px;
+    }
+
+    .button-container button {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .submit-btn {
+      background: linear-gradient(145deg, #4CAF50, #45a049);
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .submit-btn:hover {
+      background: linear-gradient(145deg, #45a049, #3d8b40);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+    }
+
+    .reset-btn {
+      background: linear-gradient(145deg, #f44336, #e53935);
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .reset-btn:hover {
+      background: linear-gradient(145deg, #e53935, #d32f2f);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(244, 67, 54, 0.3);
+    }
+
+    @media (max-width: 480px) {
+      .registration-container {
+        padding: 20px;
+      }
+
+      .button-container {
+        flex-direction: column;
+      }
+
+      .button-container button {
+        width: 100%;
+      }
+    }
+
+    /* Custom input styling */
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
+
+    /* Field validation styling */
+    input:invalid,
+    textarea:invalid {
+      border-color: #f44336;
+    }
+
+    input:valid,
+    textarea:valid {
+      border-color: #4CAF50;
+    }
+
+    .form-group select {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 15px;
+      color: #2c3e50;
+      background-color: #fff;
+      transition: all 0.3s ease;
+      box-sizing: border-box;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 24px;
+      padding-right: 40px;
+    }
+
+    .form-group select:focus {
+      border-color: #4CAF50;
+      box-shadow: 0 0 10px rgba(76, 175, 80, 0.1);
+      outline: none;
+    }
+
+    .form-group select:hover {
+      border-color: #4CAF50;
+    }
+
+    .form-group .password-container {
+      position: relative;
+    }
+
+    .form-group .password-container input {
+      padding-right: 40px;
+    }
+
+    .form-group .password-container button {
+      position: absolute;
+      top: 50%;
+      right: 15px;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      color: #2c3e50;
+    }
+
+    .form-group .password-container button:hover {
+      color: #4CAF50;
+    }
+        .toggle-password {
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #3498db;
+    }
+  </style>
+  <script>
+    function togglePasswordVisibility() {
+      const passwordInput = document.getElementById('password');
+      const toggleIcon = document.getElementById('togglePassword');
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleIcon.textContent = '🙈'; // Icon for password visible
+      } else {
+        passwordInput.type = 'password';
+        toggleIcon.textContent = '👁️'; // Icon for password hidden
+      }
+    }
+  </script>
+</head>
+<body>
+  <div class="registration-container">
+    <h2>Student Registration</h2>
+    <form action="{{ url_for('register_student') }}" method="POST">
+      <div class="form-group">
+        <label for="full_name">Full Name</label>
+        <input type="text" id="full_name" name="full_name" required placeholder="Enter your full name">
+      </div>
+
+      <div class="form-group">
+        <label for="branch">Branch</label>
+        <input type="text" id="branch" name="branch" required placeholder="Enter your branch">
+      </div>
+
+      <div class="form-group">
+        <label for="semester">Semester</label>
+        <input type="number" id="semester" name="semester" min="1" max="8" required placeholder="Enter semester (1-8)">
+      </div>
+
+      <div class="form-group">
+        <label for="reg_num">Registration Number</label>
+        <input type="text" id="reg_num" name="reg_num" required placeholder="Enter registration number">
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required placeholder="Enter your email">
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required
+               placeholder="Enter your password">
+        <span id="togglePassword" class="toggle-password" onclick="togglePasswordVisibility()">👁️</span>
+      </div>
+
+
+      <div class="form-group">
+        <label for="interested_domain">Interested Domain</label>
+        <select id="interested_domain" name="interested_domain" required>
+          <option value="">Select your interested domain</option>
+          <option value="Web Development">Web Development</option>
+          <option value="Mobile Development">Mobile Development</option>
+          <option value="Desktop Application">Desktop Application</option>
+          <option value="Game Development">Game Development</option>
+          <option value="Data Science">Data Science</option>
+        </select>
+      </div>
+
+      
+
+      <div class="form-group">
+    <label for="phone">Phone Number</label>
+    <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" required placeholder="Enter 10-digit phone number">
+  </div>
+
+  <div class="form-group">
+    <label for="cgpa">CGPA</label>
+    <input type="number" id="cgpa" name="cgpa" step="0.01" min="0" max="10" required placeholder="Enter your CGPA">
+  </div>
+
+
+      <div class="button-container">
+        <button type="submit" class="submit-btn">Submit</button>
+        <button type="reset" class="reset-btn">Reset</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

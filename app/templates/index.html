@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ThinkHub - Profile Page</title>
+  <style>
+    /* General body styling */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #d0e7ff; /* Light blue background */
+      color: #333;
+    }
+
+    /* Navbar styling */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      color: white;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      left: 0;
+      z-index: 10;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .navbar .logo {
+      font-size: 36px;
+      font-weight: bold;
+      letter-spacing: 1.5px;
+      color: white;
+      text-transform: uppercase;
+    }
+
+    /* Page container to center content */
+    .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding-top: 140px; /* Space for fixed navbar */
+      padding-left: 20px;
+      padding-right: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Sidebar styling for options */
+    .sidebar {
+      width: 30%;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    /* Option boxes styling */
+    .option {
+      background-color: white;
+      color: black;
+      text-align: center;
+      padding: 20px;
+      font-size: 20px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    /* Add Projects button styling */
+    .add-project-section {
+      width: 30%;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-end;
+      margin-top: 20px;
+    }
+
+    .add-project-btn {
+      padding: 20px;
+      background-color: white;
+      color: black;
+      font-size: 20px;
+      font-weight: bold;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+      width: 100%;
+    }
+
+    /* Project form section styling */
+    .project-form-section {
+      width: 100%;
+      margin-top: 20px;
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      display: none; /* Hidden by default */
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .project-form-section h2 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .project-form-section input,
+    .project-form-section textarea,
+    .project-form-section button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    .project-form-section button {
+      background-color: #4CAF50;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+  <script>
+    // JavaScript function to toggle the project form visibility
+    function toggleProjectForm() {
+      const projectFormSection = document.getElementById('projectFormSection');
+      projectFormSection.style.display = projectFormSection.style.display === 'none' ? 'flex' : 'none';
+    }
+  </script>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <div class="logo">ThinkHub</div>
+  </div>
+
+  <!-- Page content container -->
+  <div class="container">
+    <!-- Sidebar with options -->
+    <div class="sidebar">
+      <a href="#" class="option">Find Peers</a>
+      <a href="#" class="option">Find Mentors</a>
+      <a href="#" class="option">Find Projects</a>
+    </div>
+
+    <!-- Add Projects button -->
+    <div class="add-project-section">
+      <a href="javascript:void(0);" class="add-project-btn" onclick="toggleProjectForm()">Add Projects</a>
+    </div>
+  </div>
+
+  <!-- Project Form Section -->
+  <div class="container">
+    <div id="projectFormSection" class="project-form-section">
+      <h2>Add Project Details</h2>
+      <input type="text" placeholder="Project Title" required>
+      <textarea placeholder="Project Description" rows="4" required></textarea>
+      <button type="submit">Submit Project</button>
+    </div>
+  </div>
+
+</body>
+</html>
