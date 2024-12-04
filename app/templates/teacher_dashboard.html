@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThinkHub</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap');
+
+        :root {
+            --main-bg: #f7f9fc;
+            --card-bg: #ffffff;
+            --accent-color: #5d3fd3;
+            --text-dark: #2c3e50;
+            --text-light: #7f8c8d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--main-bg);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .profile-container {
+            max-width: 900px;
+            margin: 150px auto;
+            display: flex;
+            gap: 30px;
+            padding: 0 15px;
+        }
+
+        .sidebar {
+            width: auto;
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            height: fit-content;
+            position: sticky;
+            top: 40px;
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            padding: 10px 15px;
+            border-radius: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-link:hover {
+            background-color: #f0f0f0;
+        }
+
+        .main-content {
+            flex-grow: 1;
+        }
+
+        .project-card {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+
+        .project-form input,
+        .project-form textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .submit-btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #4a2b9b;
+        }
+
+        .project-list .project-item {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 5px solid var(--accent-color);
+        }
+
+        @media (max-width: 768px) {
+            .profile-container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                position: static;
+            }
+        }
+        .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(20, 20, 20, 0.9);
+      padding: 25px 50px;
+      color: white;
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 30px rgba(255, 255, 255, 0.1);
+    }
+
+    .navbar .logo {
+      font-size: 38px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: white;
+      text-transform: uppercase;
+      text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.1);
+      position: relative;
+      padding-bottom: 5px;
+    }
+
+    .navbar .logo::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #00ff00, #00ccff);
+      transition: width 0.3s ease;
+    }
+
+    .navbar .logo:hover::after {
+      width: 100%;
+    }
+
+    </style>
+</head>
+<body>
+    <div class="navbar">
+    <div class="logo">ThinkHub</div>
+    
+  </div>
+    <div class="profile-container">
+        <aside class="sidebar">
+            <div class="profile-header">
+                <h2>Hello, {{teacher.full_name}}</h2>
+                <p>Expert in: {{ teacher.domain_of_exp }}</p>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="{{ url_for('find') }}" class="nav-link">Find Students</a>
+                <a href="{{ url_for('logout') }}" class="nav-link">Logout!!</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <section class="project-card project-form">
+                <h2 style="margin-bottom: 20px;">Add New Project</h2>
+                <form id="projectForm" method="POST">
+                    <input type="text" id="project_name" placeholder="Project Name" name="project_name" required>
+                    <textarea id="project_description" placeholder="What's your project about?" rows="4" name="project_description" required></textarea>
+                    <button type="submit" class="submit-btn">Add Project</button>
+                </form>
+            </section>
+
+            <section class="project-card">
+                <div id="flash-messages" style="margin-bottom:3px;">
+                        {% with messages = get_flashed_messages()%}
+                        {% if messages%}
+                            {% for message in messages%}
+                            <p>{{message}}</p>
+                            {%endfor%}
+                            {%endif%}
+                            {%endwith%}
+                    </div>
+                <h2>My Projects</h2>
+                <div id="projectList" class="project-list">
+                    {% for pro in projects %}
+                    <div class="project-item">
+                        <h3>{{ pro.project_name }}</h3>
+                        <p>{{ pro.project_description }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+        </main>
+    </div>
+    <script>
+        // JavaScript to hide flash messages after 5 seconds
+        setTimeout(function() {
+            const flashMessages = document.getElementById('flash-messages');
+            if (flashMessages) {
+                flashMessages.style.transition = "opacity 0.5s";
+                flashMessages.style.opacity = "0";
+                setTimeout(() => flashMessages.remove(), 500); // Remove the element after fade out
+            }
+        }, 3000); // 5000ms = 5 seconds
+    </script>
+
+    <!-- <script>
+        document.getElementById('projectForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const title = document.getElementById('project_name').value;
+            const description = document.getElementById('project_description').value;
+
+            if (title && description) {
+                const projectList = document.getElementById('projectList');
+                const projectItem = document.createElement('div');
+                projectItem.classList.add('project-item');
+                projectItem.innerHTML = `
+                    <h3>${title}</h3>
+                    <p>${description}</p>
+                    <small style="color: var(--text-light)">Just added</small>
+                `;
+                projectList.insertBefore(projectItem, projectList.firstChild);
+                this.reset();
+            }
+        });
+    </script>
+
+ --></body>
+</html>

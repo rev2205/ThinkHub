@@ -231,18 +231,23 @@
         max-width: 350px;
       }
     }
+    .navbar .login a{
+      font-size: 28px;
+      color: antiquewhite;
+    }
   </style>
 </head>
 <body>
   <!-- Navbar -->
   <div class="navbar">
     <div class="logo">ThinkHub</div>
+    <div class = "login"><a href="{{url_for('login')}}">Login</a></div>
   </div>
 
   <!-- Welcome Text -->
   <div class="welcome-text">
     <h1>Welcome to the Community</h1>
-    <p>Join our growing network of students, teachers, and administrators to create a vibrant learning environment.</p>
+    <p>Join our growing network of students and teachers to create a vibrant learning environment.</p>
   </div>
 
   <!-- Box Container -->
@@ -255,10 +260,7 @@
       <img src="{{ url_for('static',filename='images/img2.png') }}" alt="Teacher Image">
       <p>Teacher Portal</p>
     </a>
-    <a href="admin_login.html" class="box">
-      <img src="{{ url_for('static',filename='images/img3.png') }}" alt="Admin Image">
-      <p>Admin Portal</p>
-    </a>
+    
   </div>
 </body>
 </html>

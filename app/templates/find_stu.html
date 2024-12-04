@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ThinkHub-Find</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap');
+    
+    :root {
+      --main-bg: #f7f9fc;
+      --card-bg: #ffffff;
+      --accent-color: #5d3fd3;
+      --text-dark: #2c3e50;
+      --text-light: #7f8c8d;
+      --border-color: #ddd;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-color: var(--main-bg);
+      color: var(--text-dark);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding-top: 100px;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1000px;
+      background: var(--card-bg);
+      padding: 25px 30px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .header select,
+    .header button {
+      padding: 10px 15px;
+      font-size: 16px;
+      color: var(--text-dark);
+      background: #f9f9f9;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .header button {
+      background-color: var(--accent-color);
+      color: #fff;
+      border: none;
+    }
+
+    .header button:hover {
+      background-color: darken(var(--accent-color), 10%);
+      color: black;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      padding: 20px;
+    }
+
+    table th, table td {
+      text-align: left;
+      padding: 15px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    table th {
+      background-color: #f4f6f9;
+      color: var(--text-dark);
+      font-weight: 600;
+      width: 50px;
+    }
+
+    table tr:hover {
+      background-color: #f9f9f9;
+    }
+
+    table td {
+      color: var(--text-light);
+    }
+
+    table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(20, 20, 20, 0.9);
+      padding: 25px 50px;
+      color: white;
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 30px rgba(255, 255, 255, 0.1);
+    }
+
+    .navbar .logo {
+      font-size: 38px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: white;
+      text-transform: uppercase;
+      text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.1);
+      position: relative;
+      padding-bottom: 5px;
+    }
+
+    .navbar .logo::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #00ff00, #00ccff);
+      transition: width 0.3s ease;
+    }
+
+    .navbar .logo:hover::after {
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="logo">ThinkHub</div>
+    <div class = "login"><a href="{{url_for('student_dashboard')}}">Dashboard</a></div>
+  </div>
+
+  <div class="container">
+    <form action="{{ url_for('find') }}" method="POST">
+      <div class="header">
+        <!-- Dropdowns -->
+        <select id="domain" name="domain">
+          <option value="">Domain</option>
+          <option value="Web Development">Web Development</option>
+          <option value="Mobile Development">Mobile Development</option>
+          <option value="Desktop Application">Desktop Application</option>
+          <option value="Game Development">Game Development</option>
+          <option value="Data Science">Data Science</option>
+        </select>
+        <select id="role" name="role">
+          <option value="Teacher">Teacher</option>
+          <option value="Student">Student</option>
+          
+        </select>
+        <button type="submit">Search</button>
+      </div>
+    </form>
+
+    <!-- Table -->
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Branch</th>
+          <th>Email</th>
+          <th>Projects</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for result in results %}
+        <tr>
+          <td>{{ result.name }}</td>
+          <td>{{ result.branch}}</td>
+          <td>{{ result.email }}</td>
+          <td>
+            {% if result.projects %}
+              <ul>
+                {% for project in result.projects %}
+                <li>
+                  <strong>{{ project.name }}: </strong>{{ project.desc }}
+                </li>
+                <br>
+                {% endfor %}
+              </ul>
+              {% else %}
+                No Projects Available
+              {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

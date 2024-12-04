@@ -12,27 +12,69 @@
       justify-content: center;
       align-items: center;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-image: url("{{ url_for('static', filename='images/stud.jpg' ) }}");
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
-      padding: 20px;
+      background-color: black;
+      padding: 0;
+      padding-top: 120px;
+      color: white;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(20, 20, 20, 0.9);
+      padding: 25px 50px;
+      color: white;
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 30px rgba(255, 255, 255, 0.1);
+    }
+
+    .navbar .logo {
+      font-size: 38px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: white;
+      text-transform: uppercase;
+      text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.1);
+      position: relative;
+      padding-bottom: 5px;
+    }
+
+    .navbar .logo::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #00ff00, #00ccff);
+      transition: width 0.3s ease;
+    }
+
+    .navbar .logo:hover::after {
+      width: 100%;
     }
 
     .registration-container {
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba(30, 30, 30, 0.9);
       backdrop-filter: blur(10px);
       width: 100%;
       max-width: 450px;
       padding: 35px;
       border-radius: 20px;
-      box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 15px 25px rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
     .registration-container h2 {
       margin-bottom: 30px;
       font-size: 32px;
-      color: #2c3e50;
+      color: white;
       text-align: center;
       position: relative;
     }
@@ -45,7 +87,7 @@
       transform: translateX(-50%);
       width: 60px;
       height: 4px;
-      background: linear-gradient(to right, #4CAF50, #45a049);
+      background: linear-gradient(to right, #00ff00, #00ccff);
       border-radius: 2px;
     }
 
@@ -57,40 +99,39 @@
     .form-group label {
       display: block;
       font-size: 14px;
-      color: #34495e;
+      color: rgba(255, 255, 255, 0.8);
       margin-bottom: 8px;
       font-weight: 500;
       transition: color 0.3s ease;
     }
 
     .form-group input,
-    .form-group textarea {
+    .form-group textarea,
+    .form-group select {
       width: 100%;
       padding: 12px 15px;
-      border: 2px solid #e0e0e0;
+      border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: 10px;
       font-size: 15px;
-      color: #2c3e50;
-      background-color: #fff;
+      color: white;
+      background-color: rgba(50, 50, 50, 0.5);
       transition: all 0.3s ease;
       box-sizing: border-box;
     }
 
     .form-group input:focus,
-    .form-group textarea:focus {
-      border-color: #4CAF50;
-      box-shadow: 0 0 10px rgba(76, 175, 80, 0.1);
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: #00ff00;
+      box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
       outline: none;
     }
 
-    .form-group input:hover,
-    .form-group textarea:hover {
-      border-color: #4CAF50;
-    }
-
-    .form-group textarea {
-      resize: vertical;
-      min-height: 80px;
+    .toggle-password {
+      position: absolute;
+      right: 15px;
+      top: 40px;
+      cursor: pointer;
     }
 
     .button-container {
@@ -111,29 +152,25 @@
     }
 
     .submit-btn {
-      background: linear-gradient(145deg, #4CAF50, #45a049);
-      color: white;
-      text-transform: uppercase;
-      letter-spacing: 1px;
+      background: linear-gradient(145deg, #00ff00, #00ccff);
+      color: black;
     }
 
     .submit-btn:hover {
-      background: linear-gradient(145deg, #45a049, #3d8b40);
+      background: linear-gradient(145deg, #00ccff, #00ff00);
       transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+      box-shadow: 0 5px 15px rgba(0, 255, 0, 0.3);
     }
 
     .reset-btn {
-      background: linear-gradient(145deg, #f44336, #e53935);
+      background: linear-gradient(145deg, #555, #333);
       color: white;
-      text-transform: uppercase;
-      letter-spacing: 1px;
     }
 
     .reset-btn:hover {
-      background: linear-gradient(145deg, #e53935, #d32f2f);
+      background: linear-gradient(145deg, #666, #444);
       transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(244, 67, 54, 0.3);
+      box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
     }
 
     @media (max-width: 480px) {
@@ -150,7 +187,6 @@
       }
     }
 
-    /* Custom input styling */
     input[type="number"]::-webkit-inner-spin-button,
     input[type="number"]::-webkit-outer-spin-button {
       -webkit-appearance: none;
@@ -160,77 +196,14 @@
     input[type="number"] {
       -moz-appearance: textfield;
     }
-
-    /* Field validation styling */
-    input:invalid,
-    textarea:invalid {
-      border-color: #f44336;
+    .navbar .login a{
+      font-size: 28px;
+      color: antiquewhite;
+    }
+    .navbar .login{
+      margin-right: 5%;
     }
 
-    input:valid,
-    textarea:valid {
-      border-color: #4CAF50;
-    }
-
-    .form-group select {
-      width: 100%;
-      padding: 12px 15px;
-      border: 2px solid #e0e0e0;
-      border-radius: 10px;
-      font-size: 15px;
-      color: #2c3e50;
-      background-color: #fff;
-      transition: all 0.3s ease;
-      box-sizing: border-box;
-      appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 12px center;
-      background-size: 24px;
-      padding-right: 40px;
-    }
-
-    .form-group select:focus {
-      border-color: #4CAF50;
-      box-shadow: 0 0 10px rgba(76, 175, 80, 0.1);
-      outline: none;
-    }
-
-    .form-group select:hover {
-      border-color: #4CAF50;
-    }
-
-    .form-group .password-container {
-      position: relative;
-    }
-
-    .form-group .password-container input {
-      padding-right: 40px;
-    }
-
-    .form-group .password-container button {
-      position: absolute;
-      top: 50%;
-      right: 15px;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-size: 16px;
-      color: #2c3e50;
-    }
-
-    .form-group .password-container button:hover {
-      color: #4CAF50;
-    }
-        .toggle-password {
-      position: absolute;
-      top: 50%;
-      right: 10px;
-      transform: translateY(-50%);
-      cursor: pointer;
-      color: #3498db;
-    }
   </style>
   <script>
     function togglePasswordVisibility() {
@@ -238,15 +211,29 @@
       const toggleIcon = document.getElementById('togglePassword');
       if (passwordInput.type === 'password') {
         passwordInput.type = 'text';
-        toggleIcon.textContent = '🙈'; // Icon for password visible
+        toggleIcon.textContent = '🙈';
       } else {
         passwordInput.type = 'password';
-        toggleIcon.textContent = '👁️'; // Icon for password hidden
+        toggleIcon.textContent = '👁️';
       }
     }
+    // JavaScript to hide flash messages after 5 seconds
+        setTimeout(function() {
+            const flashMessages = document.getElementById('flash-messages');
+            if (flashMessages) {
+                flashMessages.style.transition = "opacity 0.5s";
+                flashMessages.style.opacity = "0";
+                setTimeout(() => flashMessages.remove(), 500); // Remove the element after fade out
+            }
+        }, 3000); // 5000ms = 5 seconds
   </script>
 </head>
 <body>
+  <div class="navbar">
+    <div class="logo">ThinkHub</div>
+    <div class = "login"><a href="{{url_for('login')}}">Login</a></div>
+  </div>
+
   <div class="registration-container">
     <h2>Student Registration</h2>
     <form action="{{ url_for('register_student') }}" method="POST">
@@ -277,11 +264,9 @@
 
       <div class="form-group">
         <label for="password">Password</label>
-        <input type="password" id="password" name="password" required
-               placeholder="Enter your password">
+        <input type="password" id="password" name="password" required placeholder="Enter your password">
         <span id="togglePassword" class="toggle-password" onclick="togglePasswordVisibility()">👁️</span>
       </div>
-
 
       <div class="form-group">
         <label for="interested_domain">Interested Domain</label>
@@ -295,18 +280,26 @@
         </select>
       </div>
 
-      
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" required placeholder="Enter 10-digit phone number">
+      </div>
 
       <div class="form-group">
-    <label for="phone">Phone Number</label>
-    <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" required placeholder="Enter 10-digit phone number">
-  </div>
-
-  <div class="form-group">
-    <label for="cgpa">CGPA</label>
-    <input type="number" id="cgpa" name="cgpa" step="0.01" min="0" max="10" required placeholder="Enter your CGPA">
-  </div>
-
+        <label for="cgpa">CGPA</label>
+        <input type="number" id="cgpa" name="cgpa" step="0.01" min="0" max="10" required placeholder="Enter your CGPA">
+      </div>
+      <div id="flash-message">
+        {% with messages = get_flashed_messages()%}
+    {% if messages%}
+    {% for message in messages%}
+    <p style="text-align:center;">{{message}}</p>
+    {%endfor%}
+    {%endif%}
+    {%endwith%}
+        
+      </div>
+      
 
       <div class="button-container">
         <button type="submit" class="submit-btn">Submit</button>

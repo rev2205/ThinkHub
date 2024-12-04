@@ -22,6 +22,7 @@ class Student(db.Model):
     interested_domain = db.Column(db.String(200), nullable=True)  # New interested domain field
     phone = db.Column(db.String(15), nullable=False)
     cgpa = db.Column(db.Float, nullable=False)
+    projects = db.relationship('Project',backref='student',lazy=True)
 
     def set_password(self,password):
         self.password_hash = generate_password_hash(password)
@@ -41,6 +42,7 @@ class Teacher(db.Model):
     email = db.Column(db.String(100), unique=True, nullable=False)
     password_hash = db.Column(db.String(50), nullable=False)
     domain_of_exp = db.Column(db.String(50), nullable=False)
+    projects = db.relationship('Project',backref='teacher',lazy=True)
 
     def set_password(self,password):
         self.password_hash = generate_password_hash(password)
@@ -50,6 +52,17 @@ class Teacher(db.Model):
 
     def __repr__(self):
         return f'<Teacher {self.full_name}>'
+class Project(db.Model):
+    __tablename__ = 'project'
+    id = db.Column(db.Integer,primary_key=True)
+    project_name = db.Column(db.String(100), nullable=False)
+    project_description = db.Column(db.Text, nullable=False)
+    student_id = db.Column(db.Integer, db.ForeignKey('students.id'),nullable=True)
+    teacher_id = db.Column(db.Integer, db.ForeignKey('teachers.id'),nullable=True)
+
+    def __repr__(self):
+        return f'<Project {self.project_name}>'
+    
 
 @app.route('/')
 def index():
@@ -68,6 +81,14 @@ def register_student():
         phone = request.form['phone']
         cgpa = request.form['cgpa']
 
+        if Student.query.filter_by(email=email).first():
+            flash("Email already exists. Please login or use a different email.","error")
+            return redirect(url_for('register_student'))
+        
+        if Student.query.filter_by(reg_no=registration_number).first():
+            flash("Regestration number already exists!!","error")
+            return redirect(url_for('register_student'))
+
         new_student = Student(
             full_name=full_name,
             branch=branch,
@@ -82,9 +103,9 @@ def register_student():
 
         db.session.add(new_student)
         db.session.commit()
-  
 
-        return redirect(url_for('index'))
+        flash("Registration successfull. Please login.","success")
+        return redirect(url_for('login'))
     return render_template('student_login.html')
 
 @app.route('/register_teacher', methods=['GET', 'POST'])
@@ -97,6 +118,10 @@ def register_teacher():
         password = request.form['password']
         domain_of_exp = request.form['domain_of_expertise']
 
+        if Teacher.query.filter_by(email=email).first():
+            flash("Email alrady exists. Pleaase use a different email or try login.","error")
+            return redirect(url_for('register_teacher'))
+
         new_teacher = Teacher(
             full_name=name,
             dept=dept,
@@ -108,9 +133,9 @@ def register_teacher():
 
         db.session.add(new_teacher)
         db.session.commit()
+        flash("Registration succesfull. Please login.","success")
+        return redirect(url_for('login'))
 
-
-        return redirect(url_for('index'))
     return render_template('teacher_login.html')
 
 @app.route('/login', methods=['GET','POST'])
@@ -131,21 +156,84 @@ def login():
         if user and user.check_password(password):
             session['user_id'] = user.id
             session['role'] = role
-            flash("Login successfull!",'success')
-            return redirect(url_for('dashboard'))
+            if role == 'student':
+                return redirect(url_for('student_dashboard'))
+            else:
+                return redirect(url_for('teacher_dashboard'))
         else:
-            flash('Invalid email or password','error')
+            flash('Invalid email or password or role','error')
             return redirect(url_for('login'))
-
     return render_template('login.html')
 
-@app.route('/dashboard')
-def dashboard():
-    if 'user_id' in session:
-        return f"Welcome to the dashboard, {session['role']} user!!"
-    else:
-        flash("Please login in first",'error')
-        return redirect(url_for('login'))
+@app.route('/student_dashborad', methods=['GET','POST'])
+def student_dashboard():
+    if 'user_id' in session and session.get('role') == 'student':
+        student = Student.query.get(session['user_id'])
+        if request.method == 'POST':
+            project_name = request.form['project_name']
+            project_description = request.form['project_description']
+            new_project = Project(project_name=project_name,project_description=project_description,student=student)
+            db.session.add(new_project)
+            db.session.commit()
+            flash("project added succesfully","success")
+        projects = Project.query.filter_by(student_id = student.id).all()
+        return render_template('student_dashboard.html',student=student, projects=projects)
+    flash("Please login first!","error")
+    return redirect(url_for('login'))
+
+@app.route('/teacher_dashboard', methods=['GET','POST'])
+def teacher_dashboard():
+    if 'user_id' in session and session.get('role') == 'teacher':
+        teacher = Teacher.query.get(session['user_id'])
+        if request.method == 'POST':
+            project_name = request.form['project_name']
+            project_description = request.form['project_description']
+            new_project = Project(project_name=project_name, project_description=project_description,teacher=teacher)
+            db.session.add(new_project)
+            db.session.commit()
+            flash("project added succesfully!","success")
+        projects = Project.query.filter_by(teacher_id=teacher.id).all()
+        return render_template('teacher_dashboard.html',teacher=teacher, projects=projects)
+    
+    flash("pleade try login","error")
+    return redirect(url_for('login'))
+
+@app.route('/find', methods=['GET','POST'])
+def find():
+    
+    if request.method == "POST":
+        domain = request.form['domain']
+        role = request.form['role']
+
+        results = []
+        if role == "Student":
+            students = Student.query.filter_by(interested_domain=domain).all()
+            for student in students:
+                projects = Project.query.filter_by(student_id=student.id).all()
+                results.append({
+                    'name' : student.full_name,
+                    'branch' : student.branch,
+                    'email' : student.email,
+                    'projects' : [{'name' : project.project_name,'desc':project.project_description} for project in projects]
+                })
+        elif role == "Teacher":
+            teachers = Teacher.query.filter_by(domain_of_exp=domain).all()
+            for teacher in teachers:
+                projects = Project.query.filter_by(teacher_id = teacher.id).all()
+                results.append({
+                    'name' : teacher.full_name,
+                    'branch' : teacher.dept,
+                    'email' : teacher.email,
+                    'projects' : [{'name' : project.project_name, 'desc' : project.project_description} for project in projects]
+                })
+        return render_template('find.html',results=results,domain=domain, role=role)
+    return render_template('find.html')
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    flash("Logged out successfully!!","success")
+    return redirect(url_for('login'))
 
 # Only create tables if the database file doesn't exist
 if not os.path.exists('thinkhub.db'):
