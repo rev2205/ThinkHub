@@ -30,6 +30,8 @@ Flask: Serves as the backend framework, handling requests and database interacti
 
 SQLite with SQLAlchemy: Manages a robust database that stores user data and preferences securely.
 
-How to Contribute
+How to Contribute: 
 Contributions are welcome! Whether it's bug fixes, feature additions, or improvements to the documentation, I value your input. 
-Check out the issues tab to see what's currently needed, or open a new issue to suggest an improvement.
+
+
+
