@@ -7,12 +7,12 @@ Developed using Flask, ThinkHub offers a dynamic platform where students and fac
 individuals.
 
 
-Problem Statement
+Problem Statement: 
 In large educational and professional settings, it's often challenging for individuals to identify and connect with others who share similar academic interests,
 research domains, or project goals. This lack of connectivity can hinder collaborative opportunities and the sharing of valuable knowledge and resources.
 
 
-Project Solution
+Project Solution: 
 ThinkHub addresses this challenge by providing a user-friendly platform where:
 Students can register and list their academic interests, projects, and other relevant details.
 Teachers can find students who may benefit from their guidance or who can assist in specific academic projects or research.
