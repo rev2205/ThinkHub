@@ -1,7 +1,7 @@
 ThinkHub: Community Building and Management System
 
 
-Introduction
+Introduction: 
 ThinkHub is an innovative community management system designed to foster collaboration and connection within academic and professional environments.
 Developed using Flask, ThinkHub offers a dynamic platform where students and faculty can easily find and collaborate with like-minded
 individuals.
